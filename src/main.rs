@@ -133,14 +133,21 @@ fn extract_between_parentheses(input: &str) -> Vec<(String, i64)> {
         while let Some(end) = input[start..].rfind(')') {
             let expr = input[start + 1..start + end].to_string();
             print!("DEBUG:extract_between_parentheses:expr: `{}`\n", expr);
-            
+
             let extracted = extract_between_parentheses(expr.as_str());
             print!(
                 "DEBUG:extract_between_parentheses:extracted: `{:?}`\n",
                 extracted
             );
 
-            let expr_calc = extracted.iter().map(|(_, val)| val).sum::<i64>();
+            // let expr_calc = extracted.iter().map(|(_, val)| val).sum::<i64>();
+            // print!(
+            //     "DEBUG:extract_between_parentheses:expr_calc: {}\n",
+            //     expr_calc
+            // );
+
+            println!("Will update input...");
+            let expr_calc = extracted.last().unwrap().1;
             print!(
                 "DEBUG:extract_between_parentheses:expr_calc: {}\n",
                 expr_calc
@@ -158,13 +165,19 @@ fn extract_between_parentheses(input: &str) -> Vec<(String, i64)> {
                 input
             );
 
-            final_calculation += expr_calc;
+            let calc_new_input = calculate_expression(&input);
             print!(
-                "DEBUG:extract_between_parentheses:final_calculation after adding expr_calc: `{}`\n",
+                "DEBUG:extract_between_parentheses:calc_new_input: `{}`\n",
+                calc_new_input
+            );
+
+            final_calculation += calc_new_input;
+            print!(
+                "DEBUG:extract_between_parentheses:final_calculation after adding calc_new_input: `{}`\n",
                 final_calculation
             );
 
-            let item_to_add = (expr.to_string(), expr_calc);
+            let item_to_add = (expr.to_string(), final_calculation);
             print!(
                 "DEBUG:extract_between_parentheses:item_to_add: `{:?}`\n",
                 item_to_add
